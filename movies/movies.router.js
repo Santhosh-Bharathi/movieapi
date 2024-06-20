@@ -11,7 +11,7 @@ const router = express.Router();
 //Here after we Can create an CRUD Operation for Movie Appplication
 
 // R -for reading an Movies
-router.get("/", movieIndex);
+router.get("/:id", movieIndex);
 // C -for creating an Movies
 router.post("/", movieCreate);
 // U -for Update an Movie
