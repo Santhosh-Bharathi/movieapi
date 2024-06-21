@@ -1,16 +1,10 @@
-import express from "express";
-import movieRoutes from "./movies/movies.router.js";
+import express, { json } from "express";
 import connectDb from "./lib/db.js";
+import movieRoutes from "./movies/movies.router.js";
 const app = express();
-app.use(express.json());
-app.use(express.urlencoded());
+app.use(json());
 // connect DB
+app.listen(8989);
 connectDb();
-app.get("/", (req, res) => {
-  res.json("hey EveryBody...!!");
-});
-app.listen(4000, () => {
-  console.log("Port is Running Successfully");
-});
-
 app.use("/movies", movieRoutes);
+app.use(express.urlencoded());

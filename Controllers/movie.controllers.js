@@ -2,17 +2,19 @@ import Movies from "../models/movie.model.js";
 
 export const movieIndex = async (req, res) => {
   try {
-    const movie = await Movies.findById(req.params.id);
-    console.log("params" + req.params.id);
-    if (movie == null) {
-      res.status(404).json({ message: "Cannot find Movie" });
-    } else {
-      res.json(movie);
-    }
+    const movieList = await Movies.find();
+    res.json(movieList);
   } catch (error) {
     res.json({ message: error.message });
   }
-  res.json(req.body);
+};
+export const movieDetail = async (req, res) => {
+  try {
+    const movielist = await Movies.findById(req.params.id);
+    res.json(movielist);
+  } catch (error) {
+    res.json({ message: error.message });
+  }
 };
 
 export const movieCreate = async (req, res) => {
@@ -20,6 +22,7 @@ export const movieCreate = async (req, res) => {
     title: req.body.title,
     desc: req.body.desc,
   });
+
   try {
     const movie = await movieData.save();
     res.status(201).json(movieData);
@@ -28,9 +31,26 @@ export const movieCreate = async (req, res) => {
   }
 };
 
-export const movieUpdate = (req, res) => {
-  res.send("For Updating Movie");
+export const movieUpdate = async (req, res) => {
+  try {
+    const movielist = await Movies.findOneAndUpdate(
+      { _id: req.params.id },
+      {
+        title: req.body.title,
+        desc: req.body.desc,
+      }
+    );
+    res.json(movielist);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
 };
-export const movieDelete = (req, res) => {
-  res.send("For Delete Movie");
+export const movieDelete = async (req, res) => {
+  const filterId = req.params.id;
+  try {
+    const deleteMovie = await Movies.deleteOne({ _id: filterId });
+    res.json({ message: "Movie is Deleted !" });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
 };
